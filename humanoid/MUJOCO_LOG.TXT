@@ -1,0 +1,12 @@
+Sat Oct 12 16:13:31 2024
+WARNING: mju_openResource: unknown file '/home/ubuntu/project/yakebi/resources/robots/T1Bot/mjcf/t1_l.xml'
+
+Sat Oct 12 16:13:34 2024
+WARNING: mju_openResource: unknown file '/home/ubuntu/project/yakebi/resources/robots/T1Bot/mjcf/t1_l.xml'
+
+Sat Oct 12 16:13:35 2024
+WARNING: mju_openResource: unknown file '/home/ubuntu/project/yakebi/resources/robots/T1Bot/mjcf/t1_l.xml'
+
+Sat Oct 12 16:13:35 2024
+WARNING: mju_openResource: unknown file '/home/ubuntu/project/yakebi/resources/robots/T1Bot/mjcf/t1_l.xml'
+

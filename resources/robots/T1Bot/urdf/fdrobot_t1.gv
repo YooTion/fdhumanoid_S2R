@@ -1,0 +1,98 @@
+digraph G {
+node [shape=box];
+"base_link" [label="base_link"];
+"L_hipY_Link" [label="L_hipY_Link"];
+"L_hipR_Link" [label="L_hipR_Link"];
+"L_hipP_Link" [label="L_hipP_Link"];
+"L_knee_Link" [label="L_knee_Link"];
+"L_ankleY_Link" [label="L_ankleY_Link"];
+"L_ankleR_Link" [label="L_ankleR_Link"];
+"L_ankleP_Link" [label="L_ankleP_Link"];
+"R_hipY_Link" [label="R_hipY_Link"];
+"R_hipR_Link" [label="R_hipR_Link"];
+"R_hipP_Link" [label="R_hipP_Link"];
+"R_knee_Link" [label="R_knee_Link"];
+"R_ankleY_Link" [label="R_ankleY_Link"];
+"R_ankleR_Link" [label="R_ankleR_Link"];
+"R_ankleP_Link" [label="R_ankleP_Link"];
+"torsoY_Link" [label="torsoY_Link"];
+"torsoR_Link" [label="torsoR_Link"];
+"torsoP_Link" [label="torsoP_Link"];
+"L_shoulderY_Link" [label="L_shoulderY_Link"];
+"L_shoulderR_Link" [label="L_shoulderR_Link"];
+"L_elbowY_Link" [label="L_elbowY_Link"];
+"L_elbowR_Link" [label="L_elbowR_Link"];
+"R_shoulderY_Link" [label="R_shoulderY_Link"];
+"R_shoulderR_Link" [label="R_shoulderR_Link"];
+"R_elbowY_Link" [label="R_elbowY_Link"];
+"R_elbowR_Link" [label="R_elbowR_Link"];
+"neckR_Link" [label="neckR_Link"];
+"neckP_Link" [label="neckP_Link"];
+"headR_Link" [label="headR_Link"];
+"headP_Link" [label="headP_Link"];
+"headY_Link" [label="headY_Link"];
+"torso_imu_Link" [label="torso_imu_Link"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_link" -> "leg_left_hipy" [label="xyz: 0.020848 0.087 -0.008453 \nrpy: 0 -0 0.0135049"]
+"leg_left_hipy" -> "L_hipY_Link"
+"L_hipY_Link" -> "leg_left_hipr" [label="xyz: 0.000489751 0.006 -0.063 \nrpy: -0.0438484 0 0"]
+"leg_left_hipr" -> "L_hipR_Link"
+"L_hipR_Link" -> "leg_left_hipp" [label="xyz: 0.000750249 0.000605 0 \nrpy: 0 -0.26118 0"]
+"leg_left_hipp" -> "L_hipP_Link"
+"L_hipP_Link" -> "leg_left_knee" [label="xyz: -0.0830043 0.0150331 -0.349141 \nrpy: 0.0602241 0.401635 -0.00375355"]
+"leg_left_knee" -> "L_knee_Link"
+"L_knee_Link" -> "leg_left_ankley" [label="xyz: 0.0157753 0.0045 -0.318443 \nrpy: 5.29532e-23 -0.0227375 3.16973e-05"]
+"leg_left_ankley" -> "L_ankleY_Link"
+"L_ankleY_Link" -> "leg_left_ankler" [label="xyz: 0.001 0 -0.109 \nrpy: -0.0141735 0 0"]
+"leg_left_ankler" -> "L_ankleR_Link"
+"L_ankleR_Link" -> "leg_left_anklep" [label="xyz: 0 0 0 \nrpy: 0 -0.105 0"]
+"leg_left_anklep" -> "L_ankleP_Link"
+"base_link" -> "leg_right_hipy" [label="xyz: 0.020848 -0.087 -0.008453 \nrpy: 0 0 -0.0135049"]
+"leg_right_hipy" -> "R_hipY_Link"
+"R_hipY_Link" -> "leg_right_hipr" [label="xyz: 0.000489751 -0.006 -0.063 \nrpy: 0.0438484 -0 0"]
+"leg_right_hipr" -> "R_hipR_Link"
+"R_hipR_Link" -> "leg_right_hipp" [label="xyz: 0.000750249 -0.000605 0 \nrpy: 0 -0.26118 0"]
+"leg_right_hipp" -> "R_hipP_Link"
+"R_hipP_Link" -> "leg_right_knee" [label="xyz: -0.0830043 -0.0150331 -0.349141 \nrpy: -0.0602241 0.401635 0.00375355"]
+"leg_right_knee" -> "R_knee_Link"
+"R_knee_Link" -> "leg_right_ankley" [label="xyz: 0.0157753 -0.0045 -0.318443 \nrpy: 0 -0.0227375 -3.16973e-05"]
+"leg_right_ankley" -> "R_ankleY_Link"
+"R_ankleY_Link" -> "leg_right_ankler" [label="xyz: 0.001 0 -0.109 \nrpy: 0.0141735 -0 0"]
+"leg_right_ankler" -> "R_ankleR_Link"
+"R_ankleR_Link" -> "leg_right_anklep" [label="xyz: 0 0 0 \nrpy: 0 -0.105 0"]
+"leg_right_anklep" -> "R_ankleP_Link"
+"base_link" -> "torsoy" [label="xyz: -0.00482885 0 0.0660669 \nrpy: -0.00177757 0.471236 -0.00391544"]
+"torsoy" -> "torsoY_Link"
+"torsoY_Link" -> "torsor" [label="xyz: 0.00223949 0 0.057 \nrpy: 0 -0 0.00348869"]
+"torsor" -> "torsoR_Link"
+"torsoR_Link" -> "torsop" [label="xyz: 0 0 0 \nrpy: 0 -0.471236 0"]
+"torsop" -> "torsoP_Link"
+"torsoP_Link" -> "arm_left_humeraly" [label="xyz: 0.00679205 0.130034 0.260803 \nrpy: -0.773266 0.0436641 0.0446927"]
+"arm_left_humeraly" -> "L_shoulderY_Link"
+"L_shoulderY_Link" -> "arm_left_humeralr" [label="xyz: -0.00184029 0.011 0.038 \nrpy: -0.187255 0 0"]
+"arm_left_humeralr" -> "L_shoulderR_Link"
+"L_shoulderR_Link" -> "arm_left_elbow" [label="xyz: 0.0009 0.109108 -0.0422899 \nrpy: 0.300381 -1.07419 1.23206"]
+"arm_left_elbow" -> "L_elbowY_Link"
+"L_elbowY_Link" -> "arm_left_wristr" [label="xyz: -0.00155284 0.000385608 -0.1267 \nrpy: 0.0330072 8.67362e-19 -0.243401"]
+"arm_left_wristr" -> "L_elbowR_Link"
+"torsoP_Link" -> "arm_right_humeraly" [label="xyz: 0.00679205 -0.130034 0.260803 \nrpy: 0.773266 0.0436641 -0.0446927"]
+"arm_right_humeraly" -> "R_shoulderY_Link"
+"R_shoulderY_Link" -> "arm_right_humeralr" [label="xyz: -0.00184029 -0.011 0.038 \nrpy: 0.187255 -0 0"]
+"arm_right_humeralr" -> "R_shoulderR_Link"
+"R_shoulderR_Link" -> "arm_right_elbow" [label="xyz: 0.0009 -0.109108 -0.0422899 \nrpy: -0.300381 -1.07419 -1.23206"]
+"arm_right_elbow" -> "R_elbowY_Link"
+"R_elbowY_Link" -> "arm_right_wristr" [label="xyz: -0.00155284 -0.000385608 -0.1267 \nrpy: -0.0330072 -0 0.243401"]
+"arm_right_wristr" -> "R_elbowR_Link"
+"torsoP_Link" -> "head_tilt" [label="xyz: -0.044909 -0.000734686 0.271461 \nrpy: 0 -0.0864163 0"]
+"head_tilt" -> "neckR_Link"
+"neckR_Link" -> "head_flex" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"head_flex" -> "neckP_Link"
+"neckP_Link" -> "head_r" [label="xyz: 0.00882322 0 0.10764 \nrpy: -0.0713772 0.0864164 4.35305e-19"]
+"head_r" -> "headR_Link"
+"headR_Link" -> "head_p" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
+"head_p" -> "headP_Link"
+"headP_Link" -> "head_y" [label="xyz: 0 -0.00234204 0.0785883 \nrpy: 0 -0.000885935 0.0103008"]
+"head_y" -> "headY_Link"
+"torsoP_Link" -> "torso_imu" [label="xyz: 0 0 0.26 \nrpy: 0 -0 0"]
+"torso_imu" -> "torso_imu_Link"
+}

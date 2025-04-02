@@ -1,0 +1,194 @@
+<mujoco model="fdrobot_t1">
+  <compiler angle="radian" meshdir="../meshes" autolimits="true" discardvisual="false"/>
+  <option timestep='0.001' iterations='50' solver='PGS' gravity='0 0 -9.81'>
+  <flag frictionloss="enable"/>
+  </option>
+  <size njmax="500" nconmax="100" />
+  
+  <default>
+    <joint limited="true" pos="0 0 0"/>
+    <motor ctrllimited='true'/>
+    <geom friction='1.0 1.0 1.0'/>
+    <default class="visual">
+      <geom group="0" conaffinity="0" contype="0" condim='1' type="mesh"/>
+    </default>
+    <default class="collision">
+      <geom group="1" condim="3" type="mesh"/>
+    </default>
+  </default>
+  
+  <asset>
+    <mesh name="base_link" file="base_link_half.STL"/>
+    <mesh name="R_hipY_Link" file="R_hipY_Link.STL"/>
+    <mesh name="R_hipR_Link" file="R_hipR_Link.STL"/>
+    <mesh name="R_hipP_Link" file="R_hipP_Link.STL"/>
+    <mesh name="R_knee_Link" file="R_knee_Link.STL"/>
+    <mesh name="R_ankleY_Link" file="R_ankleY_Link.STL"/>
+    <mesh name="R_ankleR_Link" file="R_ankleR_Link.STL"/>
+    <mesh name="R_ankleP_Link" file="R_ankleP_Link.STL"/>
+    <mesh name="R_ankleP_Link_c" file="R_ankleP_Link.obj"/>
+    <mesh name="L_hipY_Link" file="L_hipY_Link.STL"/>
+    <mesh name="L_hipR_Link" file="L_hipR_Link.STL"/>
+    <mesh name="L_hipP_Link" file="L_hipP_Link.STL"/>
+    <mesh name="L_knee_Link" file="L_knee_Link.STL"/>
+    <mesh name="L_ankleY_Link" file="L_ankleY_Link.STL"/>
+    <mesh name="L_ankleR_Link" file="L_ankleR_Link.STL"/>
+    <mesh name="L_ankleP_Link" file="L_ankleP_Link.STL"/>
+    <mesh name="L_ankleP_Link_c" file="L_ankleP_Link.obj"/>
+    <texture builtin="gradient" height="100" rgb1=".4 .5 .6" rgb2="0 0 0" type="skybox" width="100"/>
+    <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="100" height="100"/>
+    <material name="MatPlane" reflectance="0.5" texture="texplane" texrepeat="1 1" texuniform="true"/>
+  </asset>
+
+  <contact>
+    <exclude body1="base_link" body2="R_hipY_Link" />
+    <exclude body1="base_link" body2="R_hipR_Link" />
+    <exclude body1="base_link" body2="R_hipP_Link" />
+    <exclude body1="base_link" body2="L_hipY_Link" />
+    <exclude body1="base_link" body2="L_hipR_Link" />
+    <exclude body1="base_link" body2="L_hipP_Link" />
+    <exclude body1="R_hipP_Link" body2="R_hipY_Link" />
+    <exclude body1="L_hipP_Link" body2="L_hipY_Link" />
+    <exclude body1="R_ankleY_Link" body2="R_ankleP_Link" />
+    <exclude body1="L_ankleY_Link" body2="L_ankleP_Link" />
+  </contact>
+
+  <worldbody>
+    <geom name="floor" friction="1 .8 .8" pos="0 0 0" size="500 500 0.125" type="plane" material="MatPlane" condim="3" conaffinity="1" contype="1" group="2" rgba="0.8 0.9 0.8 1"></geom>
+    <light cutoff="100" diffuse="1 1 1" dir="-0 0 -1.3" directional="true" exponent="1" pos="0 0 1.3" specular=".1 .1 .1" castshadow="false"/>
+    <body name="base_link" pos="0 0 0.9">
+      <inertial pos="-0.01792 -0.00116544 0.16046544" mass="14.48" diaginertia="0.30956858 0.26039718 0.10594006"/>
+      <!-- <camera name="track" mode="trackcom" pos="0 0 4" xyaxes="1 0 0 0 1 0"/> -->
+      <!-- <freejoint/> -->
+      <joint name="pelvis_tx" type="slide" pos="0 0 0" axis="       1        0        0" limited="false" range="      -500        500" ref="0" armature="0" damping="0" stiffness="0"></joint>
+      <joint name="pelvis_tz" type="slide" pos="0 0 0" axis="       0        1        0" limited="false" range="      -300        300" ref="0" armature="0" damping="0" stiffness="0"></joint>
+      <joint name="pelvis_ty" type="slide" pos="0 0 0" axis="       0        0        1" limited="false" range="      -100        200" ref="0" armature="0" damping="0" stiffness="0"></joint>
+      <joint name="pelvis_tilt" type="hinge" pos="0 0 0" axis="       0        -1        0" limited="false" range=" -1.5708   1.5708" ref="0" armature="0" damping="0" stiffness="0"></joint>
+      <joint name="pelvis_list" type="hinge" pos="0 0 0" axis="       1        0        0" limited="false" range=" -1.5708   1.5708" ref="0" armature="0" damping="0" stiffness="0"></joint>
+      <joint name="pelvis_rotation" type="hinge" pos="0 0 0" axis="       0        0        1" limited="false" range=" -1.5708   1.5708" ref="0" armature="0" damping="0" stiffness="0"></joint>
+      <geom class="visual" rgba="1.5 1.5 1.5 1" mesh="base_link"/>
+      <geom class="collision" rgba="1.5 1.5 1.5 1" mesh="base_link"/>
+      <site name='imu' size='0.01' pos='0.0 0 0.0' />
+      <body name="L_hipY_Link" pos="0.01584881 0.087 -0.0106761" quat="0.999977 0 0 0.00675242">
+        <inertial pos="-0.00846725 0.00122011 -0.0337378" quat="0.42147 0.570438 0.486911 0.509784" mass="0.135" diaginertia="0.000175092 0.000141954 0.000100044"/>
+        <joint name="leg_left_hipy"  axis="0 0 1" range="-0.5 0.5" armature="1.3" frictionloss="6"  damping="2.5"/>
+        <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="L_hipY_Link"/>
+        <geom class="collision" rgba="0.6 0.6 0.6 1" mesh="L_hipY_Link"/>
+        <body name="L_hipR_Link" pos="0.000489751 0.006 -0.063" euler="-0.073848446215598 0 0">
+          <inertial pos="0.00520149 -4.1e-07 1.63e-05" quat="-0.000402195 0.707107 -0.000402195 0.707107" mass="2.13" diaginertia="0.00250818 0.00235874 0.00225394"/>
+          <joint name="leg_left_hipr" axis="1 0 0" range="-0.3 0.5" armature="0.3" frictionloss="4" damping="15"/>
+          <geom class="visual" rgba="0.3 0.3 0.3 1" mesh="L_hipR_Link"/>
+          <geom class="collision" rgba="0.3 0.3 0.3 1" mesh="L_hipR_Link"/>
+          <body name="L_hipP_Link" pos="0.000750249 0.000605 0" euler="0 -0.221180468392862 0">
+            <inertial pos="-0.0505661 0.0126985 -0.193921" quat="0.995027 0.0319995 0.0870331 0.0363737" mass="1.54" diaginertia="0.0183267 0.0181132 0.00210226"/>
+            <joint name="leg_left_hipp"  axis="0 -1 0" range="-0.3 1.0" armature="2.5" frictionloss="8." damping="17.5"/>
+            <geom class="visual" rgba="1.5 1.5 1.5 1" mesh="L_hipP_Link"/>
+            <geom class="collision" rgba="1.5 1.5 1.5 1" mesh="L_hipP_Link"/>
+            <body name="L_knee_Link" pos="-0.0830043 0.0150331 -0.349141" euler="0.0602241343835302 0.401634851584503 -0.00375354549252036">
+              <inertial pos="-0.00233767 0.00884361 -0.14667" quat="0.694289 -0.0194318 -0.0291511 0.718844" mass="3.02" diaginertia="0.0306188 0.0303396 0.00264269"/>
+              <joint name="leg_left_knee"  axis="0 1 0" range="-0.  1.0"  armature="1.6" frictionloss="8.5" damping="6.5"/>
+              <geom class="visual" rgba="1.5 1.5 1.5 1" mesh="L_knee_Link"/>
+              <geom class="collision" rgba="1.5 1.5 1.5 1" mesh="L_knee_Link"/>
+              <body name="L_ankleY_Link" pos="0.0157753 0.0045 -0.318443" quat="0.999935 1.80176e-07 -0.0113685 1.58476e-05">
+                <inertial pos="-1.144e-05 -0.00010759 -0.0548204" quat="0.707107 0 0 0.707107" mass="0.11" diaginertia="0.00011929 0.00011813 1.839e-05"/>
+                <!-- <joint name="leg_left_ankley" axis="0 0 1" range="-1.  1." armature="0.1"/> -->
+                <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="L_ankleY_Link"/>
+                <geom class="collision" rgba="0.6 0.6 0.6 1" mesh="L_ankleY_Link"/>
+                <body name="L_ankleR_Link" pos="0.001 0 -0.109" quat="0.999975 -0.00708668 0 0">
+                  <inertial pos="-6e-07 3.42e-06 2.51e-06" quat="0.5 0.5 -0.5 0.5" mass="0.032" diaginertia="2.72e-06 1.71e-06 1.71e-06"/>
+                  <joint name="leg_left_ankler"  axis="1 0 0" range="-0.3 0.3"  armature="0.45" frictionloss="5." damping="3."/>
+                  <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="L_ankleR_Link"/>
+                  <geom class="collision" rgba="0.6 0.6 0.6 1" mesh="L_ankleR_Link"/>
+                  <body name="L_ankleP_Link" euler="0.03 -0.165 0">
+                    <inertial pos="0.0337068 0.00066451 -0.0253885" quat="0.01863 0.713852 0.0305994 0.699379" mass="0.38" diaginertia="0.000789094 0.000760761 0.000118106"/>
+                    <joint name="leg_left_anklep"  axis="0 -1 0" range="-0.5 0.5" armature="0.9" frictionloss="5." damping="12"/>
+                    <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="L_ankleP_Link"/>
+                    <geom class="collision" rgba="0.6 0.6 0.6 1" mesh="L_ankleP_Link"/>
+                    <site name="lf_force" size="0.01" pos="0.0 0.0 0.0" />
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+      <body name="R_hipY_Link" pos="0.01584881 -0.087 -0.0106761" quat="0.999977 0 0 -0.00675242">
+        <inertial pos="-0.00690057 -0.00103408 -0.0329926" quat="0.509784 0.486911 0.570438 0.42147" mass="0.135" diaginertia="0.000175092 0.000141954 0.000100044"/>
+        <joint name="leg_right_hipy" axis="0 0 -1"  range="-0.5 0.5" armature="1.3" frictionloss="6"  damping="2.5"/>
+        <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="R_hipY_Link"/>
+        <body name="R_hipR_Link" pos="0.000489751 -0.006 -0.063" euler="0.073848446215598 0 0">
+          <inertial pos="0.00515634 -1.035e-05 1.63e-05" quat="-0.000402195 0.707107 -0.000402195 0.707107" mass="2.13" diaginertia="0.00250818 0.00235874 0.00225394"/>
+          <joint name="leg_right_hipr"  axis="-1 0 0" range="-0.3 0.5" armature="0.3" frictionloss="4" damping="15"/>
+          <geom class="visual" rgba="0.3 0.3 0.3 1" mesh="R_hipR_Link"/>
+          <geom class="collision" rgba="0.3 0.3 0.3 1" mesh="R_hipR_Link"/>
+          <body name="R_hipP_Link" pos="0.000750249 -0.000605 0" euler="0 -0.221180468392862 0">
+            <inertial pos="-0.0505279 -0.0127896 -0.193489" quat="0.995023 -0.0320105 0.0870352 -0.0364497" mass="1.54" diaginertia="0.0183274 0.0181139 0.00210231"/>
+            <joint name="leg_right_hipp"  axis="0 -1 0" range="-0.3  1.0" armature="2.5" frictionloss="8." damping="17.5"/>
+            <geom class="visual" rgba="1.5 1.5 1.5 1" mesh="R_hipP_Link"/>
+            <geom class="collision" rgba="1.5 1.5 1.5 1" mesh="R_hipP_Link"/>
+            <body name="R_knee_Link" pos="-0.0830043 -0.0150331 -0.349141" euler="-0.0602241343835302 0.401634851584503 0.00375354549252053">
+              <inertial pos="-0.00231537 -0.00881299 -0.146801" quat="0.718841 -0.0291515 -0.0194313 0.694291" mass="3.02" diaginertia="0.0306189 0.0303396 0.00264269"/>
+              <joint name="leg_right_knee" axis="0 1 0" range="-0. 1.0" armature="1.6" frictionloss="8.5" damping="6.5"/>
+              <geom class="visual" rgba="1.5 1.5 1.5 1" mesh="R_knee_Link"/>
+              <geom class="collision" rgba="1.5 1.5 1.5 1" mesh="R_knee_Link"/>
+              <body name="R_ankleY_Link" pos="0.0157753 -0.0045 -0.318443" quat="0.999935 -1.80176e-07 -0.0113685 -1.58476e-05">
+                <inertial pos="-1.146e-05 0.00015459 -0.0549323" quat="0.707107 0 0 0.707107" mass="0.11" diaginertia="0.00011929 0.00011813 1.839e-05"/>
+                <!-- <joint name="leg_right_ankley"  axis="4.55686e-05 -0.101403 -0.994845" range="-1.  1." armature="0.1"/> -->
+                <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="R_ankleY_Link"/>
+                <geom class="collision" rgba="0.6 0.6 0.6 1" mesh="R_ankleY_Link"/>
+                <body name="R_ankleR_Link" pos="0.001 0 -0.109" quat="0.999975 0.00708668 0 0">
+                  <inertial pos="-6e-07 -6.65e-06 2.51e-06" quat="0.5 0.5 -0.5 0.5" mass="0.032" diaginertia="2.72e-06 1.71e-06 1.71e-06"/>
+                  <joint name="leg_right_ankler" axis="-1 0 0" range="-0.3 0.3" armature="0.45" frictionloss="5." damping="3."/>
+                  <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="R_ankleR_Link"/>
+                  <geom class="collision" rgba="0.6 0.6 0.6 1" mesh="R_ankleR_Link"/>
+                  <body name="R_ankleP_Link" euler="-0.03 -0.165 0">
+                    <inertial pos="0.032887 -0.00059932 -0.0262722" quat="-0.0182088 0.722969 -0.0308234 0.689952" mass="0.38" diaginertia="0.000789094 0.000760761 0.000118105"/>
+                    <joint name="leg_right_anklep" axis="0 -1 0" range="-0.5 0.5" armature="0.9" frictionloss="5." damping="12"/>
+                    <geom class="visual" rgba="0.6 0.6 0.6 1" mesh="R_ankleP_Link"/>
+                    <geom class="collision" rgba="0.6 0.6 0.6 1" mesh="R_ankleP_Link"/>
+                    <site name="rf_force" size="0.01" pos="0.0 0.0 0.0" />
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+      <motor name="leg_left_hipy_motor" joint="leg_left_hipy" gear="1" ctrllimited="true" ctrlrange="-127 127"/>
+      <motor name="leg_left_hipr_motor" joint="leg_left_hipr"  gear="1" ctrllimited="true" ctrlrange="-450 450"/>
+      <motor name="leg_left_hipp_motor" joint="leg_left_hipp"  gear="1" ctrllimited="true" ctrlrange="-450 450"/>
+      <motor name="leg_left_knee_motor" joint="leg_left_knee"  gear="1" ctrllimited="true" ctrlrange="-135 135"/>
+      <motor name="leg_left_ankler_motor" joint="leg_left_ankler"  gear="1" ctrllimited="true" ctrlrange="-148 148"/>
+      <motor name="leg_left_anklep_motor" joint="leg_left_anklep"  gear="1" ctrllimited="true" ctrlrange="-148 148"/>
+      <motor name="leg_right_hipy_motor" joint="leg_right_hipy" gear="1" ctrllimited="true" ctrlrange="-127 127"/>
+      <motor name="leg_right_hipr_motor" joint="leg_right_hipr"  gear="1" ctrllimited="true" ctrlrange="-450 450"/>
+      <motor name="leg_right_hipp_motor" joint="leg_right_hipp"  gear="1" ctrllimited="true" ctrlrange="-450 450"/>
+      <motor name="leg_right_knee_motor" joint="leg_right_knee" gear="1" ctrllimited="true" ctrlrange="-135 135"/>
+      <motor name="leg_right_ankler_motor" joint="leg_right_ankler" gear="1" ctrllimited="true" ctrlrange="-148 148"/>
+      <motor name="leg_right_anklep_motor" joint="leg_right_anklep"  gear="1" ctrllimited="true" ctrlrange="-148 148"/>
+  </actuator>
+
+  <sensor>
+      <framequat     name='orientation' objtype='site' noise='0.01' objname='imu'/>
+      <framepos     name='position' objtype='site' noise='0.01' objname='imu'/>
+      <gyro          name='angular-velocity'    site='imu' noise='0.05' cutoff='34.9'/>
+      <velocimeter   name='linear-velocity'     site='imu' noise='0.01' cutoff='30'/>
+      <accelerometer name='linear-acceleration' site='imu' noise='0.05' cutoff='157'/>
+      <magnetometer  name='magnetometer'        site='imu'/>
+      <framepos     name='positionl' objtype='site' objname='lf_force'/>
+      <framepos     name='positionr' objtype='site' objname='rf_force'/>
+      <framequat     name='orientationl' objtype='site' objname='lf_force'/>
+      <framequat     name='orientationr' objtype='site' objname='rf_force'/>
+      <!-- right foot -->
+      <force name="RightFootForceSensor_fsensor" site="rf_force" />
+      <torque name="RightFootForceSensor_tsensor" site="rf_force" />
+      <!-- left foot -->
+      <force name="LeftFootForceSensor_fsensor" site="lf_force" />
+      <torque name="LeftFootForceSensor_tsensor" site="lf_force" />
+      <!-- <framelinacc name='linacc' objtype='site' noise='0.001' objname='imu'/> -->
+  </sensor>
+</mujoco>
