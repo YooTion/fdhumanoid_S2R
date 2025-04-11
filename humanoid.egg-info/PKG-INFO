@@ -11,6 +11,5 @@ Requires-Dist: tensorboard
 Requires-Dist: tqdm
 Requires-Dist: numpy==1.23.5
 Requires-Dist: opencv-python
-Requires-Dist: mujoco==2.3.6
-Requires-Dist: mujoco-python-viewer
+Requires-Dist: mujoco
 Requires-Dist: matplotlib
