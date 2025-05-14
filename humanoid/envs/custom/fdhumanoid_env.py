@@ -240,8 +240,8 @@ class FdBotFreeEnv(LeggedRobot):
 
         scale = torch.ones_like(sin_pos)
         scale_1 = scale.clone() * self.cfg.rewards.target_joint_pos_scale_knee
-        scale_2 = scale_1.clone() * 0.55
-        scale_3 = scale_1.clone() * 0.45
+        scale_2 = scale_1.clone() * 1.0 #0.55
+        scale_3 = scale_1.clone() * 0.85
 
         # left foot stance phase set to default joint pos
         sin_pos_l[sin_pos_l > 0] = 0.
@@ -255,7 +255,9 @@ class FdBotFreeEnv(LeggedRobot):
         self.ref_dof_pos[:, 11] = sin_pos_r * scale_3
 
         self.ref_dof_pos[:] = torch.clip(self.ref_dof_pos[:], self.dof_pos_limits[:, 0], self.dof_pos_limits[:, 1])
-        self.ref_dof_pos[:] = torch.clip(self.ref_dof_pos[:], self.dof_pos_limits[:, 0], self.dof_pos_limits[:, 1])
+        # print("xxxxxxxxxxxxxxxxxx")
+        # print(self.ref_dof_pos[:,2])
+        # print(self.dof_pos_limits[2,:])
 
         if self.cfg.rewards.scales.zero_stand != 0:
             if torch.numel(self.stand_idx) != 0:
@@ -652,7 +654,32 @@ class FdBotFreeEnv(LeggedRobot):
         diff = joint_pos - pos_target
         r = torch.exp(-2 * torch.norm(diff, dim=1)) - 0.2 * torch.norm(diff, dim=1).clamp(0, 0.5)
         return r
+    
+    def _reward_joint_hip_pos(self):
+        """
+        Calculates the reward based on the difference between the current joint positions and the target joint positions.
+        """
+        joint_pos = self.dof_pos.clone()
+        pos_target = self.ref_dof_pos.clone()
+        selected_joints = [2, 8]
+        diff = joint_pos[:, selected_joints] - pos_target[:, selected_joints]
+        r = torch.exp(-0.1 * torch.norm(diff,dim=1))
+        # print("joint_pos:", joint_pos[:,2])
+        # print("pos_target",pos_target[:,2])
+        return r
 
+    # def _reward_joint_knee_pos(self):
+    #     """
+    #     Calculates the reward based on the difference between the current joint positions and the target joint positions.
+    #     """
+    #     joint_pos = self.dof_pos.clone()
+    #     pos_target = self.ref_dof_pos.clone()
+    #     diff = joint_pos[:,3] - pos_target[:,3]
+    #     r = torch.exp(-0.1 * torch.norm(diff))
+    #     # print("joint_pos:", joint_pos[:,2])
+    #     # print("pos_target",pos_target[:,2])
+    #     return r
+    
     def _reward_feet_distance(self):
         """
         Calculates the reward based on the distance between the feet. Penilize feet get close to each other or too far away.
@@ -806,19 +833,19 @@ class FdBotFreeEnv(LeggedRobot):
             reward = torch.ones_like(self.dof_pos[:, 0])
         return reward
 
-    def _reward_hip_ankle_consistent(self):
-        """
-        髋关节与踝关节的摆动角度一致
-        """
-        # 3. 添加手部对称性、一致性奖励
-        footl_pitch = self.dof_pos[:, 5]
-        footr_pitch = self.dof_pos[:, 11]
-        l_hip_p = self.dof_pos[:, 2]
-        r_hip_p = self.dof_pos[:, 8]
-        l_rew = torch.exp(-torch.abs(footl_pitch - l_hip_p) * 10)
-        r_rew = torch.exp(-torch.abs(footr_pitch - r_hip_p) * 10)
-        rew = (l_rew + r_rew) / 2
-        return rew
+    # def _reward_hip_ankle_consistent(self):
+    #     """
+    #     髋关节与踝关节的摆动角度一致
+    #     """
+    #     # 3. 添加手部对称性、一致性奖励
+    #     footl_pitch = self.dof_pos[:, 5]
+    #     footr_pitch = self.dof_pos[:, 11]
+    #     l_hip_p = self.dof_pos[:, 2]
+    #     r_hip_p = self.dof_pos[:, 8]
+    #     l_rew = torch.exp(-torch.abs(footl_pitch - l_hip_p) * 10)
+    #     r_rew = torch.exp(-torch.abs(footr_pitch - r_hip_p) * 10)
+    #     rew = (l_rew + r_rew) / 2
+    #     return rew
 
     def _reward_ankle_torques(self):
         """
@@ -869,20 +896,39 @@ class FdBotFreeEnv(LeggedRobot):
 
     #     return rew_pos
     
+    # def _reward_feet_clearance(self):
+    #     """
+    #         抬腿高度
+    #     """
+    #     feet_z = self.rigid_state[:, self.feet_indices, 2] - 0.05
+    #     delta_z = feet_z - self.last_feet_z
+    #     self.feet_height += delta_z
+    #     self.last_feet_z = feet_z
+
+    #     # Compute swing mask
+    #     swing_mask = 1 - self._get_gait_phase()
+
+    #     # feet height should be closed to target feet height at the peak
+    #     rew_pos = torch.abs(self.feet_height - self.cfg.rewards.target_feet_height) < 0.01
+    #     rew_pos = torch.sum(rew_pos * swing_mask, dim=1)
+    #     self.feet_height *= swing_mask
+
+    #     return rew_pos
+
     def _reward_feet_clearance(self):
         """
-            抬腿高度
+            抬腿高度，把奖励改称连续的
         """
         feet_z = self.rigid_state[:, self.feet_indices, 2] - 0.05
         delta_z = feet_z - self.last_feet_z
         self.feet_height += delta_z
         self.last_feet_z = feet_z
-
         # Compute swing mask
         swing_mask = 1 - self._get_gait_phase()
-
+        self.feet_height = torch.maximum(self.feet_height, feet_z * swing_mask)
         # feet height should be closed to target feet height at the peak
-        rew_pos = torch.abs(self.feet_height - self.cfg.rewards.target_feet_height) < 0.01
+        height_error = torch.abs(self.feet_height - self.cfg.rewards.target_feet_height)
+        rew_pos = torch.exp(-5.0 * height_error)
         rew_pos = torch.sum(rew_pos * swing_mask, dim=1)
         self.feet_height *= swing_mask
 
@@ -978,4 +1024,12 @@ class FdBotFreeEnv(LeggedRobot):
         linear_error = 0.2 * (lin_vel_error + ang_vel_error)
 
         return (lin_vel_error_exp + ang_vel_error_exp) / 2. - linear_error
+    
+    def _reward_step_height(self):
+        """
+        """
+        current_base_height = self.root_states[:,2]
+        rw = torch.exp(current_base_height)
+
+        return rw
     

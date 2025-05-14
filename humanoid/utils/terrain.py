@@ -207,6 +207,7 @@ class HumanoidTerrain(Terrain):
                                 vertical_scale=self.cfg.vertical_scale,
                                 horizontal_scale=self.cfg.horizontal_scale)
         discrete_obstacles_height = difficulty * 0.08
+        platform_size_change = (1-difficulty) * 7.
         r_height = difficulty * 0.07
         h_slope = difficulty * 0.15
         if choice < self.proportions[0]:
@@ -223,9 +224,9 @@ class HumanoidTerrain(Terrain):
         elif choice < self.proportions[4]:
             terrain_utils.pyramid_sloped_terrain(terrain, slope=-h_slope, platform_size=0.1)
         elif choice < self.proportions[5]:
-            terrain_utils.pyramid_stairs_terrain(terrain, step_width=0.4, step_height=discrete_obstacles_height, platform_size=1.)
+            terrain_utils.pyramid_stairs_terrain(terrain, step_width=0.4, step_height=discrete_obstacles_height, platform_size=platform_size_change)
         elif choice < self.proportions[6]:
-            terrain_utils.pyramid_stairs_terrain(terrain, step_width=0.4, step_height=-discrete_obstacles_height, platform_size=1.)
+            terrain_utils.pyramid_stairs_terrain(terrain, step_width=0.4, step_height=-discrete_obstacles_height, platform_size=platform_size_change)
         else:
             pass
         return terrain

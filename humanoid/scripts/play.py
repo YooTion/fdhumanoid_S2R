@@ -34,7 +34,7 @@ def on_press(key):
     try:
         with lock:
             if key.char == 'w':
-                current_lin_vel = 1.0
+                current_lin_vel = 0.8
             elif key.char == 's':
                 current_lin_vel = -1.0
             elif key.char == 'a':
@@ -297,7 +297,7 @@ def play(args):
     logger = Logger(env.dt)
     robot_index = 0  # which robot is used for logging
     joint_index = 2  # which joint is used for logging
-    stop_state_log = 10000  # number of steps before plotting states
+    stop_state_log = 1000  # number of steps before plotting states
     if RENDER:
         camera_properties = gymapi.CameraProperties()
         camera_properties.width = 1920

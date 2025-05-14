@@ -192,7 +192,7 @@ class HumaRobotSimRos(Node):
         force_foot[0] = -data.sensor('LeftFootForceSensor_fsensor').data.astype(np.double)[2]
         force_foot[1] = -data.sensor('RightFootForceSensor_fsensor').data.astype(np.double)[2]
 
-        torso_quat = data.sensor('orientation_torso').data[[1, 2, 3, 0]].astype(np.double)
+        torso_quat = data.sensor('orientation').data[[1, 2, 3, 0]].astype(np.double)
         torso_omega = data.sensor('angular-velocity_torso').data.astype(np.double)
         # torsop_quat = data.sensor('orientation_torsop').data[[1, 2, 3, 0]].astype(np.double)
         # torsop_omega = data.sensor('angular-velocity_torsop').data.astype(np.double)

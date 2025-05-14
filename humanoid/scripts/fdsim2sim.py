@@ -40,7 +40,7 @@ from humanoid.tools.timer import Timer
 import humanoid.config.sim2sim_config as sim2simcfg
 import humanoid.tools.common as tool_util
 import matplotlib.pyplot as plt
-import rospy
+# import rospy
 from std_msgs.msg import Float32
 
 
