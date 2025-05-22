@@ -112,9 +112,9 @@ class FdBotCfg(LeggedRobotCfg):
         ankle_p_armature = 0.9
 
     class terrain(LeggedRobotCfg.terrain):
-        # mesh_type = 'plane'
-        mesh_type = 'trimesh'
-        curriculum = True
+        mesh_type = 'plane'
+        # mesh_type = 'trimesh'
+        # curriculum = True
         # rough terrain only:
         measure_heights = False
         static_friction = 1.0
@@ -125,8 +125,8 @@ class FdBotCfg(LeggedRobotCfg):
         num_cols = 20  # number of terrain cols (types)
         max_init_terrain_level = 10  # starting curriculum state
         # plane; obstacles; uniform; slope_up; slope_down, stair_up, stair_down
-        terrain_proportions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0.2]
-        # terrain_proportions = [0.4, 0.0, 0.0, 0.0, 0.0, 0.3, 0.3]
+        # terrain_proportions = [0.0, 0.0, 0.0, 0.0, 0.0, 0.8, 0.2]
+        terrain_proportions = [0.4, 0.0, 0.0, 0.3, 0.3, 0.0, 0.0]
         restitution = 0
 
     class noise:
@@ -166,15 +166,15 @@ class FdBotCfg(LeggedRobotCfg):
 
     class control(LeggedRobotCfg.control):
         # PD Drive parameters:
-        stiffness = {'hipy': 200.0, 'hipr': 325.0, 'hipp': 1750.0,
-                     'knee': 850.0, 'ankler': 130, 'anklep': 310.,
+        stiffness = {'hipy': 200.0, 'hipr': 325.0, 'hipp': 1450.0,
+                     'knee': 550.0, 'ankler': 130, 'anklep': 310.,
                     }
         damping = {'hipy': 7.5, 'hipr': 12., 'hipp': 75.,
                    'knee': 20., 'ankler': 3., 'anklep': 3.5,
                    }
 
         # action scale: target angle = actionScale * action + defaultAngle
-        action_scale = 1.5 #0.5改大一些
+        action_scale = 1.0 #0.5改大一些
         # decimation: Number of control action updates @ sim DT per policy DT
         decimation = 4  # 50hz
 
@@ -301,7 +301,7 @@ class FdBotCfg(LeggedRobotCfg):
         max_curriculum = 1.
         curriculum = True
         class ranges:
-            lin_vel_x = [-0.5, 0.5]  # min max [m/s]
+            lin_vel_x = [-0.5, 0.8]  # min max [m/s]
             lin_vel_y = [-0.5, 0.5]   # min max [m/s]
             ang_vel_yaw = [-1., 1.]    # min max [rad/s]
             heading = [-3.14, 3.14]
@@ -313,33 +313,33 @@ class FdBotCfg(LeggedRobotCfg):
         # put some settings here for LLM parameter tuning
         target_joint_pos_scale_knee = 1.0    # rad 0.25 0.2
         target_joint_pos_scale = 0.3    # rad 0.25 0.2
-        target_feet_height = 0.18 #再抬高一些
+        target_feet_height = 0.15 #再抬高一些
         cycle_time = 0.8                # sec [0.32-0.64]
         # if true negative total rewards are clipped at zero (avoids early termination problems)
         only_positive_rewards = True
         # tracking reward = exp(error*sigma)
         tracking_sigma = 5
-        max_contact_force = 2000  #400 forces above this value are penalized 抬高
+        max_contact_force = 1500  #400 forces above this value are penalized 抬高
 
         class scales:
             # reference motion tracking
-            joint_pos = 4 #2.2 小一点
+            joint_pos = 15 #2.2 小一点
             # joint_knee_pos = 40
             # joint_hip_pos = 10
             feet_contact_number = 1.2
             # gait
-            foot_slip = -2
-            feet_distance = 5
+            foot_slip = -5
+            feet_distance = 3
             # contact
-            feet_contact_forces = -0.2
+            feet_contact_forces = -0.5
             # vel tracking
-            tracking_lin_vel = 1 #2把原来的速度追踪奖励降低一点
+            tracking_lin_vel = 5 #2把原来的速度追踪奖励降低一点
             tracking_ang_vel = 1 #1.2小一点
-            low_speed = 0.2
-            track_vel_hard = 1 #0.5小一点
-            vel_mismatch_exp = 0.5  # lin_z; ang x,y
+            low_speed = 1
+            track_vel_hard = 2 #0.5小一点
+            # vel_mismatch_exp = 0.5  # lin_z; ang x,y
             # base pos
-            orientation = 1.0
+            orientation = 8.0
             base_acc = 0.2
             # energy
             action_smoothness = -0.003
@@ -351,13 +351,13 @@ class FdBotCfg(LeggedRobotCfg):
             zero_stand = 2.0
             # foot
             feet_orientation = 0.5
-            feet_clearance = 5 #1.5大一些
+            feet_clearance = 6 #1.5大一些
             ankle_torques = 0.5
             # leg
-            default_joint_pos = 4
-            dof_pos_limits = -3 #-10,小一点
+            default_joint_pos = 5
+            dof_pos_limits = -2 #-10,小一点
             actions_limits = -0.5 #-1.0 小一点
-            step_height = 2
+            # step_height = 2
 
     class normalization:
         class obs_scales:
@@ -386,7 +386,7 @@ class FdBotCfgPPO(LeggedRobotCfgPPO):
         critic_hidden_dims = [768, 256, 128]
 
     class algorithm(LeggedRobotCfgPPO.algorithm):
-        entropy_coef = 0.01 #0.01 增强探索性试试
+        entropy_coef = 0.001 #0.01 增强探索性试试
         learning_rate = 1e-5
         num_learning_epochs = 2
         gamma = 0.994 #0.994 聚焦当下奖励
@@ -397,7 +397,7 @@ class FdBotCfgPPO(LeggedRobotCfgPPO):
         policy_class_name = 'ActorCritic'
         algorithm_class_name = 'PPO'
         num_steps_per_env = 60  # per iteration
-        max_iterations = 10001  # number of policy updates
+        max_iterations = 5001  # number of policy updates
 
         # logging
         save_interval = 100  # check for potential saves every this many iterations

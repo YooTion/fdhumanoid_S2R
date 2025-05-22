@@ -240,8 +240,8 @@ class FdBotFreeEnv(LeggedRobot):
 
         scale = torch.ones_like(sin_pos)
         scale_1 = scale.clone() * self.cfg.rewards.target_joint_pos_scale_knee
-        scale_2 = scale_1.clone() * 1.0 #0.55
-        scale_3 = scale_1.clone() * 0.85
+        scale_2 = scale_1.clone() * 0.5 #0.55
+        scale_3 = scale_1.clone() * 0.5
 
         # left foot stance phase set to default joint pos
         sin_pos_l[sin_pos_l > 0] = 0.
@@ -655,18 +655,18 @@ class FdBotFreeEnv(LeggedRobot):
         r = torch.exp(-2 * torch.norm(diff, dim=1)) - 0.2 * torch.norm(diff, dim=1).clamp(0, 0.5)
         return r
     
-    def _reward_joint_hip_pos(self):
-        """
-        Calculates the reward based on the difference between the current joint positions and the target joint positions.
-        """
-        joint_pos = self.dof_pos.clone()
-        pos_target = self.ref_dof_pos.clone()
-        selected_joints = [2, 8]
-        diff = joint_pos[:, selected_joints] - pos_target[:, selected_joints]
-        r = torch.exp(-0.1 * torch.norm(diff,dim=1))
-        # print("joint_pos:", joint_pos[:,2])
-        # print("pos_target",pos_target[:,2])
-        return r
+    # def _reward_joint_hip_pos(self):
+    #     """
+    #     Calculates the reward based on the difference between the current joint positions and the target joint positions.
+    #     """
+    #     joint_pos = self.dof_pos.clone()
+    #     pos_target = self.ref_dof_pos.clone()
+    #     selected_joints = [2, 8]
+    #     diff = joint_pos[:, selected_joints] - pos_target[:, selected_joints]
+    #     r = torch.exp(-0.1 * torch.norm(diff,dim=1))
+    #     # print("joint_pos:", joint_pos[:,2])
+    #     # print("pos_target",pos_target[:,2])
+    #     return r
 
     # def _reward_joint_knee_pos(self):
     #     """
